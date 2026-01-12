@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate, logout, login
 
 from locations.models import Location
-from locations.serializers import LocationSerializer
+from locations.serializers import LocationSerializer, PresignedUploadSerializer
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
 # Create your views here.
@@ -41,3 +41,7 @@ class LogoutView(APIView):
         
         logout(request)
         return Response({"detail": "Logout successful."}, status=status.HTTP_200_OK)
+    
+class UploadView(APIView):
+    permission_classes = [IsAuthenticated]
+   

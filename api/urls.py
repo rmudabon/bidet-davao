@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from .views import LocationViewSet, LoginView, LogoutView
+from .views import LocationViewSet, LoginView, LogoutView, UploadView
 
 router = routers.DefaultRouter()
 router.register(r"locations", LocationViewSet)
@@ -12,4 +12,5 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('upload/', UploadView.as_view(), name='upload')
 ]
