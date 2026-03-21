@@ -17,6 +17,7 @@ class S3:
         """
         Generate a presigned S3 URL for S3 operations
         """
+        print(f"Generating presigned URL for object: {object_name} with method: {client_method}")
         try:
             response = self.client.generate_presigned_url(
                 ClientMethod=client_method,
@@ -39,10 +40,15 @@ class S3:
         :param object_name: File name
         :param expiration: Expiration time in seconds
         """
+        print(f"Generating presigned URL for object: {object_name}")
+
+        if not object_name:
+            logging.error("Object name is required to generate presigned URL.")
+            return None
 
         return self.generate_presigned_url(
             object_name,
             client_method='put_object',
-            expiration=3600
+            expiration=expiration
         )
     
