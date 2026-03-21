@@ -34,7 +34,7 @@ class LoginView(APIView):
             return Response({"detail": "Credentials are invalid."}, status=status.HTTP_400_BAD_REQUEST)
         
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         if not request.user.is_authenticated:
@@ -44,7 +44,7 @@ class LogoutView(APIView):
         return Response({"detail": "Logout successful."}, status=status.HTTP_200_OK)
     
 class UploadView(APIView):
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
         serializer = PresignedUploadSerializer(data=request.data)
