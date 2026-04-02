@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    command: gunicorn bidet_davao.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - '8000:8000'
+    env_file:
+      - .env
+    environment:
+      # Explicitly set Linux paths for the GIS libraries
+      - GDAL_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/libgdal.so
+      - GEOS_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/libgeos_c.so

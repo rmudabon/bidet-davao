@@ -28,8 +28,10 @@ SECRET_KEY = 'django-insecure-@+0qpn9@eiq4bl_n7dmnx6njcey-ya2)2c86jwdv5551iga2eq
 DEBUG = True
 ALLOWED_HOSTS = []
 
-GDAL_LIBRARY_PATH = env('GDAL_LIBRARY_PATH')
-GEOS_LIBRARY_PATH = env('GEOS_LIBRARY_PATH')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+GDAL_LIBRARY_PATH = env('GDAL_LIBRARY_PATH', default=None)
+GEOS_LIBRARY_PATH = env('GEOS_LIBRARY_PATH', default=None)
 
 
 # Application definition
@@ -95,11 +97,11 @@ WSGI_APPLICATION = 'bidet_davao.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'NAME': env('DB_NAME', default='bidet_davao'),
+        'USER': env('DB_USER', default='postgres'),
+        'PASSWORD': env('DB_PASSWORD', default='password'),
+        'HOST': env('DB_HOST', default='host.docker.internal'),
+        'PORT': env('DB_PORT', default='5432'),
     }
 }
 
@@ -151,7 +153,7 @@ REST_FRAMEWORK = {
 
 # AWS
 
-AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
-AWS_S3_BUCKET_NAME = env('AWS_S3_BUCKET_NAME')
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=None)
+AWS_S3_BUCKET_NAME = env('AWS_S3_BUCKET_NAME', default=None)
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default=None)
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default=None)
