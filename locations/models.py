@@ -7,22 +7,17 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
-
 class Location(BaseModel):
-
-    TYPES = {
-        ("M", "Male"),
-        ("F", "Female"),
-        ("PWD", "PWD"),
-        ("U", "Unisex"),
-    }
+    class StallType(models.TextChoices):
+        MALE = "M"
+        FEMALE = "F"
+        PWD = "PWD"
+        UNISEX = "U"
 
     name = models.CharField(max_length=255)
     address = models.TextField()
-    latitude = models.DecimalField(max_digits=9,decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
     point = models.PointField(srid=4326, geography=True, null=False)
-    stall_type = models.CharField(max_length=50, choices=TYPES, default="U")
+    stall_type = models.CharField(max_length=50, choices=StallType.choices, default=StallType.UNISEX)
     description = models.TextField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
 
