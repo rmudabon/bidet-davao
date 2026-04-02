@@ -26,8 +26,10 @@ SECRET_KEY = 'django-insecure-@+0qpn9@eiq4bl_n7dmnx6njcey-ya2)2c86jwdv5551iga2eq
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+
+GDAL_LIBRARY_PATH = env('GDAL_LIBRARY_PATH')
+GEOS_LIBRARY_PATH = env('GEOS_LIBRARY_PATH')
 
 
 # Application definition
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'api',
     'locations',
     'drf_spectacular',
@@ -91,7 +94,7 @@ WSGI_APPLICATION = 'bidet_davao.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
