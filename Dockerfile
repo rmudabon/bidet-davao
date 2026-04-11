@@ -2,9 +2,9 @@ FROM python:3.13-slim
 RUN mkdir /app
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PORT 8000
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8000
 EXPOSE 8000
 
 RUN apt-get update && apt-get install -y \
@@ -21,5 +21,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate --noinput
-CMD gunicorn bidet_davao.wsgi:application
+CMD ["gunicorn", "bidet_davao.wsgi:application"]
 
