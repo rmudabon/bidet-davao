@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PORT=8000
 EXPOSE 8000
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install --no-install-recommends -y \
     binutils \
     libproj-dev \
     gdal-bin \
@@ -19,7 +19,9 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
-RUN python manage.py collectstatic --noinput
-RUN python manage.py migrate --noinput
-CMD ["gunicorn", "bidet_davao.wsgi:application"]
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
