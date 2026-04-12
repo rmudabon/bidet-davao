@@ -94,8 +94,6 @@ WSGI_APPLICATION = 'bidet_davao.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-print(env('DB_HOST'))
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
