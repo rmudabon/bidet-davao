@@ -66,6 +66,8 @@ ROOT_URLCONF = 'bidet_davao.urls'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://dvobdt.com",
+    "https://www.dvobdt.com",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
