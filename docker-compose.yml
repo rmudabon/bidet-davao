@@ -10,3 +10,4 @@ services:
       - DB_HOST=host.docker.internal
       - GDAL_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/libgdal.so
       - GEOS_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/libgeos_c.so
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
