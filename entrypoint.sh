@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
+python manage.py collectstatic --settings=bidet_davao.settings.production --clear --noinput 
 
 echo "Running migrations..."
 python manage.py migrate --noinput
