@@ -6,3 +6,5 @@ venv
 .venv
 db.sqlite3
 .DS_Store
+global-bundle.pem
+staticfiles

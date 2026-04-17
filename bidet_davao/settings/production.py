@@ -1,10 +1,23 @@
+from socket import gethostbyname, gethostname
+
 from .base import *
+
 DEBUG = False
+USE_S3 = env.bool('USE_S3', default=False)
 
 PARSED_ALLOWED_HOSTS = env('ALLOWED_HOSTS', default="dvobdt.com,www.dvobdt.com").split(',')
 ALLOWED_HOSTS.extend(PARSED_ALLOWED_HOSTS)
 
-USE_S3 = env.bool('USE_S3', default=False)
+try:
+    hostname = gethostname()
+    container_ip = gethostbyname(hostname)
+    if container_ip:
+        ALLOWED_HOSTS.append(container_ip)
+except Exception:
+    # Fallback if socket fails
+    pass
+
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
 
 if USE_S3:
     AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=None)
@@ -15,4 +28,11 @@ if USE_S3:
     
     # Static file settings
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-    STATICFILES_STORAGE = 'storages.backends.s3.S3Storage'
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+            "OPTIONS": {
+                "location": "static",
+            },
+        },
+    }
