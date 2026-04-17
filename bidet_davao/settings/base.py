@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'locations',
     'drf_spectacular',
     'corsheaders',
+    'storages',
 ]
 
 MIDDLEWARE = [
