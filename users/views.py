@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, UserSerializer
 
 # Create your views here.
 class RegisterView(CreateAPIView):
@@ -37,4 +37,8 @@ class LogoutView(APIView):
         
         logout(request)
         return Response({"detail": "Logout successful."}, status=status.HTTP_200_OK)
+    
+class UserDetailView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
     
