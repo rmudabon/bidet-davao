@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'api',
     'locations',
     'users',
+    'geolocation',
     'drf_spectacular',
     'corsheaders',
     'storages',
@@ -109,6 +110,8 @@ DATABASES = {
         'PORT': env('DB_PORT', default='5432'),
     }
 }
+
+ORS_API_KEY = env('ORS_API_KEY', default='your_openrouteservice_api_key_here')
 
 
 # Password validation
