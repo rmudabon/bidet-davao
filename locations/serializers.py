@@ -17,6 +17,7 @@ class LocationSerializer(serializers.ModelSerializer):
         latitude = validated_data.pop('latitude')
         longitude = validated_data.pop('longitude')
         validated_data['point'] = Point((longitude, latitude))
+        validated_data['created_by'] = self.context['request'].user
 
         return super().create(validated_data)
     

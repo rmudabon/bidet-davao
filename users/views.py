@@ -41,4 +41,7 @@ class LogoutView(APIView):
 class UserDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
     

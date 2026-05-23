@@ -3,11 +3,13 @@ from locations.serializers import LocationSerializer, PresignedUploadSerializer
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.views import APIView
 from locations.utils.s3 import S3
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 class LocationViewSet(viewsets.ModelViewSet):
@@ -22,7 +24,7 @@ class LocationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs = Location.objects.filter(status=Location.Status.ACTIVE)
 
-        is_mine = self.request.query_params.get("mine")
+        is_mine = self.request.query_params.get("mine", "").lower() == "true"
         lat = self.request.query_params.get("lat")
         lng = self.request.query_params.get("lng")
         radius = int(self.request.query_params.get("radius", 50)) # In meters
@@ -42,6 +44,17 @@ class LocationViewSet(viewsets.ModelViewSet):
         
 
         return qs
+    
+    def get_object(self):
+        obj = get_object_or_404(Location, pk=self.kwargs['pk'])
+
+        if obj.status != Location.Status.ACTIVE: 
+            if not self.request.user.is_authenticated or obj.created_by != self.request.user:
+                raise PermissionDenied("You do not have permission to access this location.")
+        
+        self.check_object_permissions(self.request, obj)
+        return obj
+
 
 
 class UploadView(APIView):

@@ -33,6 +33,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 GDAL_LIBRARY_PATH = env('GDAL_LIBRARY_PATH', default=None)
 GEOS_LIBRARY_PATH = env('GEOS_LIBRARY_PATH', default=None)
 
+# AWS
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default='your_aws_access_key_id_here')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='your_aws_secret_access_key_here')
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default='your_aws_region_here')
+AWS_S3_BUCKET_NAME = env('AWS_S3_BUCKET_NAME', default='your_aws_s3_bucket_name_here')
+
 
 # Application definition
 
