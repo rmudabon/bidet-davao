@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from locations.utils.s3 import S3
+from django.contrib.gis.geos import Point
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.measure import D
 
 # Create your views here.
 class LocationViewSet(viewsets.ModelViewSet):
@@ -15,6 +18,32 @@ class LocationViewSet(viewsets.ModelViewSet):
 
     queryset = Location.objects.all().order_by("-created_at")
     serializer_class = LocationSerializer
+
+    def get_queryset(self):
+        qs = Location.objects.filter(status=Location.Status.ACTIVE)
+
+        is_mine = self.request.query_params.get("mine")
+        lat = self.request.query_params.get("lat")
+        lng = self.request.query_params.get("lng")
+        radius = int(self.request.query_params.get("radius", 50)) # In meters
+
+        if is_mine and self.request.user.is_authenticated:
+            qs = Location.objects.filter(created_by=self.request.user)
+            return qs
+
+        if lat and lng:
+            user_point = Point(float(lng), float(lat), srid=4326)  # Note: Point takes (longitude, latitude)
+            qs = (
+                qs
+                .filter(point__distance_lte=(user_point, D(m=radius)))
+                .annotate(distance=Distance('point', user_point))
+                .order_by('distance')
+            )
+        
+
+        return qs
+
+
 class UploadView(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -30,6 +59,7 @@ class UploadView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
    
+
 class HealthCheckView(APIView):
     permission_classes = [AllowAny]
 

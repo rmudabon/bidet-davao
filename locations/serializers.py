@@ -7,9 +7,11 @@ class LocationSerializer(serializers.ModelSerializer):
 
     lat = serializers.SerializerMethodField(read_only=True)
     lng = serializers.SerializerMethodField(read_only=True)
+    distance = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
         model = Location
-        fields = ["id", "name", "address", "latitude", "longitude", "stall_type", "description", "image_url", 'lat', 'lng']
+        fields = ["id", "name", "address", "latitude", "longitude", "stall_type", "description", "image_url", 'lat', 'lng' , 'status', 'distance']
 
     def create(self, validated_data):
         latitude = validated_data.pop('latitude')
@@ -32,6 +34,10 @@ class LocationSerializer(serializers.ModelSerializer):
 
     def get_lng(self, obj):
         return obj.point.x if obj.point else None
+    
+    def get_distance(self, obj):
+        distance = getattr(obj, 'distance', None)
+        return round(distance.m) if distance is not None else None
 
 class PresignedUploadSerializer(serializers.Serializer):
     file_name = serializers.CharField()

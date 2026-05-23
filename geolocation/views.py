@@ -5,6 +5,13 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # Create your views here.
+DAVAO_BBOX = {
+    "min_lat": 6.767579526961214,
+    "min_lon": 125.07797241210939,
+    "max_lat": 7.493196470122287,
+    "max_lon": 125.89645385742189
+}
+
 
 class GeoAutoCompleteView(APIView):
     client = openrouteservice.Client(key=settings.ORS_API_KEY)
@@ -15,7 +22,15 @@ class GeoAutoCompleteView(APIView):
             return Response({"error": "Missing 'text' query parameter."}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            results = self.client.pelias_autocomplete(search_text, country='PH', layers=['address', 'venue'])
+            results = self.client.pelias_autocomplete(
+                search_text, 
+                country='PH', 
+                layers=['address', 'venue'], 
+                rect_min_x=DAVAO_BBOX['min_lon'], 
+                rect_min_y=DAVAO_BBOX['min_lat'],
+                rect_max_x=DAVAO_BBOX['max_lon'], 
+                rect_max_y=DAVAO_BBOX['max_lat']
+            )
             features = results.get('features', [])
             first_five_suggestions = features[:5] if features else []
             parsed_suggestions = []
