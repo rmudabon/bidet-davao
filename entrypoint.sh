@@ -16,7 +16,7 @@ except Exception as e:
 "
 
 echo "Collecting static files..."
-python manage.py collectstatic --settings=bidet_davao.settings.production --clear --noinput 
+python manage.py collectstatic --settings=bidet_davao.settings.production --noinput 
 
 echo "Running migrations..."
 python manage.py migrate --noinput
