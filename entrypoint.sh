@@ -1,4 +1,10 @@
 #!/bin/sh
+set -e
+
+# If arguments are passed, run them directly instead of the default startup
+if [ $# -gt 0 ]; then
+  exec "$@"
+fi
 
 echo "Collecting static files..."
 python manage.py collectstatic --settings=bidet_davao.settings.production --clear --noinput 

@@ -25,7 +25,6 @@ if USE_S3:
 
     # S3 Settings
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/images/'
     
     # Static file settings
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
