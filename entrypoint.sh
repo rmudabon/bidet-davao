@@ -6,6 +6,15 @@ if [ $# -gt 0 ]; then
   exec "$@"
 fi
 
+echo "Checking active AWS Identity..."
+python -c "
+import boto3
+try:
+    print('Assumed Identity:', boto3.client('sts').get_caller_identity()['Arn'])
+except Exception as e:
+    print('Failed to get AWS identity:', str(e))
+"
+
 echo "Collecting static files..."
 python manage.py collectstatic --settings=bidet_davao.settings.production --clear --noinput 
 
