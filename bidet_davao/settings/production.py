@@ -20,7 +20,6 @@ except Exception:
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
 
 if USE_S3:
-    AWS_DEFAULT_ACL = None
     AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default=None)
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=None)
 
