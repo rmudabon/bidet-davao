@@ -79,10 +79,14 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.dvobdt.com",
 ]
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    'https://dvobdt.com',
+    'https://www.dvobdt.com',
 ]
 
 TEMPLATES = [
